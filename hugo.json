@@ -1,0 +1,17 @@
+{
+  "baseURL": "https://example.org/",
+  "title": "Project Documentation",
+  "publishDir": "_site",
+  "enableRobotsTXT": true,
+  "markup": {
+    "goldmark": {
+      "renderHooks": {
+        "link": { "useEmbedded": "fallback" },
+        "image": { "useEmbedded": "fallback" }
+      }
+    }
+  },
+  "params": {
+    "description": "Public documentation for the project."
+  }
+}
