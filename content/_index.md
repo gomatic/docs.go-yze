@@ -1,6 +1,7 @@
 ---
 title: go-yze
 ---
+
 `go-yze` (package `goyze`) is the **Go analysis runtime** behind gomatic's [`yze`](https://github.com/gomatic/yze) analyzer suite. It registers [`go/analysis`](https://pkg.go.dev/golang.org/x/tools/go/analysis) analyzers, runs them over package patterns through a pluggable driver, and normalizes every finding into a lean, stickler-compatible JSON `Report` — with optional mechanical fixing and post-fix verification.
 
 - **Source:** [`gomatic/go-yze`](https://github.com/gomatic/go-yze)
