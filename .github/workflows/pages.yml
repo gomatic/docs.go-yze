@@ -1,8 +1,13 @@
-# Always present, self-gating: every docs repo carries this identical workflow.
-# While the repository is PRIVATE both jobs skip (GitHub Pages is unavailable on
-# private repos in free orgs), so the run is neutral — no failure, no rename
-# latch. Making the repo public is the only switch: the next push builds and
-# deploys the Hugo site at the repo root (configure-pages enables Pages itself).
+# Managed by nicerobot/tools.repository (distribute-docs)
+# Always present, self-gating: every docs repo carries this identical workflow,
+# distributed from template.repo-docs by `git repo build distribute` (spec 008).
+# The gate deploys whenever Pages can actually serve the site: a PUBLIC repo
+# always builds (configure-pages self-enables Pages on first run), and a PRIVATE
+# repo builds only when Pages is already enabled (paid plans allow private-repo
+# Pages; on free plans the check finds nothing and the run stays neutral — no
+# failure, no rename latch). Making the repo public, or enabling Pages on a
+# private repo, requires no file change: the next push builds and deploys the
+# Hugo site at the repo root with the GitHub Actions Pages source.
 name: pages
 
 on:
@@ -20,8 +25,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.check.outputs.deploy }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event.repository.private }}" != "true" ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          elif gh api "repos/${{ github.repository }}/pages" --silent 2>/dev/null; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
-    if: ${{ !github.event.repository.private }}
+    needs: gate
+    if: ${{ needs.gate.outputs.deploy == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,8 +63,8 @@ jobs:
           path: _site
 
   deploy:
-    if: ${{ !github.event.repository.private }}
-    needs: build
+    needs: [gate, build]
+    if: ${{ needs.gate.outputs.deploy == 'true' }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
