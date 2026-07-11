@@ -1,0 +1,24 @@
+{{- /* Managed by nicerobot/tools.repository (distribute-docs) */ -}}
+{{- /* Derives the site's fleet identity from the Pages baseURL: org (GitHub owner),
+     repo (docs.<project>), project (documented repo), and GitHub URLs. At GitHub
+     Pages build time the workflow injects the canonical baseURL, so every docs
+     site resolves its identity with zero per-repo configuration; local previews
+     fall back to the site title. */ -}}
+{{- $u := urls.Parse site.BaseURL -}}
+{{- $host := $u.Hostname -}}
+{{- $repo := strings.Trim $u.Path "/" -}}
+{{- $org := "" -}}
+{{- if hasSuffix $host ".github.io" -}}
+{{- $org = strings.TrimSuffix ".github.io" $host -}}
+{{- end -}}
+{{- $title := strings.TrimSuffix " Documentation" site.Title -}}
+{{- $project := strings.TrimPrefix "docs." $repo -}}
+{{- if not $project -}}{{- $project = $title -}}{{- end -}}
+{{- if not $project -}}{{- $project = "project" -}}{{- end -}}
+{{- $github := "" -}}
+{{- $source := "" -}}
+{{- if and $org $repo -}}
+{{- $github = printf "https://github.com/%s/%s" $org $repo -}}
+{{- $source = printf "https://github.com/%s/%s" $org $project -}}
+{{- end -}}
+{{- return (dict "org" $org "repo" $repo "project" $project "title" (or $title $project) "github" $github "source" $source) -}}

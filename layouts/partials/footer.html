@@ -1,0 +1,41 @@
+{{- /* Managed by nicerobot/tools.repository (distribute-docs) */ -}}
+{{- $id := partialCached "identity.html" . -}}
+<footer class="colophon">
+<span>{{ $id.project }}{{ with $id.org }} — part of <a href="https://github.com/{{ . }}">{{ . }}</a>{{ end }}</span>
+<span>{{ with $id.source }}<a href="{{ . }}">github.com/{{ $id.org }}/{{ $id.project }}</a>{{ end }}</span>
+</footer>
+<script>
+(function () {
+  var order = ["auto", "dark", "light"];
+  var root = document.documentElement;
+  var button = document.querySelector("[data-theme-cycle]");
+  var label = document.querySelector("[data-theme-label]");
+  function current() {
+    var t = root.getAttribute("data-theme");
+    return t === "light" || t === "dark" ? t : "auto";
+  }
+  function show() { if (label) label.textContent = current(); }
+  if (button) button.addEventListener("click", function () {
+    var next = order[(order.indexOf(current()) + 1) % order.length];
+    if (next === "auto") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", next);
+    try {
+      if (next === "auto") localStorage.removeItem("docs-theme");
+      else localStorage.setItem("docs-theme", next);
+    } catch (e) {}
+    show();
+  });
+  show();
+  document.querySelectorAll(".listing").forEach(function (listing) {
+    var copy = listing.querySelector(".copy");
+    var code = listing.querySelector("pre");
+    if (!copy || !code || !navigator.clipboard) return;
+    copy.addEventListener("click", function () {
+      navigator.clipboard.writeText(code.textContent).then(function () {
+        copy.textContent = "copied";
+        setTimeout(function () { copy.textContent = "copy"; }, 1600);
+      });
+    });
+  });
+})();
+</script>

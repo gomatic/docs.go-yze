@@ -1,0 +1,15 @@
+{{- /* Managed by nicerobot/tools.repository (distribute-docs) */ -}}
+{{ define "main" }}
+<div class="page">
+<article class="sheet notfound">
+<h1>No manual entry<span class="notfound-path"> for <code data-notfound-path>this page</code></span></h1>
+<p>The page you requested is not in this manual. Try the <a href="{{ site.Home.RelPermalink }}">index</a>.</p>
+</article>
+</div>
+<script>
+(function () {
+  var slot = document.querySelector("[data-notfound-path]");
+  if (slot) slot.textContent = location.pathname;
+})();
+</script>
+{{ end }}

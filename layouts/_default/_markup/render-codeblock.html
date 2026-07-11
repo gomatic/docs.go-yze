@@ -1,0 +1,6 @@
+{{- /* Managed by nicerobot/tools.repository (distribute-docs) */ -}}
+{{- $result := transform.HighlightCodeBlock . (dict "noClasses" false) -}}
+<figure class="listing">
+<figcaption class="listing-cap"><span class="listing-lang">{{ or .Type "text" }}</span><button class="copy" type="button" aria-label="copy code to clipboard">copy</button></figcaption>
+{{ $result.Wrapped }}
+</figure>

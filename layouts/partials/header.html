@@ -1,0 +1,11 @@
+{{- /* Managed by nicerobot/tools.repository (distribute-docs) */ -}}
+{{- $id := partialCached "identity.html" . -}}
+<header class="runhead">
+<a class="runhead-name" href="{{ site.Home.RelPermalink }}">{{ $id.project }}<span class="man-sect">(docs)</span></a>
+<span class="runhead-center">{{ with $id.org }}{{ . }} manual{{ else }}{{ $id.title }}{{ end }}</span>
+<nav class="runhead-nav" aria-label="site">
+{{ with $id.source }}<a href="{{ . }}">[source]</a>{{ end }}
+{{ with $id.github }}<a href="{{ . }}">[docs]</a>{{ end }}
+<button class="theme-cycle" type="button" data-theme-cycle aria-label="switch color theme">theme:<span data-theme-label>auto</span></button>
+</nav>
+</header>

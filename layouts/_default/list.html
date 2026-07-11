@@ -1,7 +1,21 @@
+{{- /* Managed by nicerobot/tools.repository (distribute-docs) */ -}}
 {{ define "main" }}
+<div class="page">
+<article class="sheet">
+<header class="sheet-head">
 <h1>{{ .Title }}</h1>
+</header>
 {{ .Content }}
-<ul>
-{{ range .Pages }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
+{{ with .Pages }}
+<section class="index">
+<h2 class="man-head">Index</h2>
+<ul class="index-list">
+{{ range . }}
+<li><a href="{{ .RelPermalink }}"><span class="index-title">{{ .Title }}</span><span class="leader" aria-hidden="true"></span>{{ with or .Description .Summary }}<span class="index-desc">{{ . | plainify | truncate 64 }}</span>{{ end }}</a></li>
+{{ end }}
 </ul>
+</section>
+{{ end }}
+</article>
+</div>
 {{ end }}

@@ -1,4 +1,23 @@
+{{- /* Managed by nicerobot/tools.repository (distribute-docs) */ -}}
 {{ define "main" }}
-<h1>{{ .Site.Title }}</h1>
+{{- $id := partialCached "identity.html" . -}}
+<div class="page">
+<article class="sheet">
+<section class="name-block">
+<h2 class="man-head">Name</h2>
+<h1 class="name-line"><span class="name-project">{{ $id.project }}</span><span class="name-dash"> — </span>{{ with site.Params.description }}{{ . }}{{ else }}public documentation{{ if $id.org }} for {{ $id.org }}/{{ $id.project }}{{ end }}{{ end }}</h1>
+</section>
 {{ .Content }}
+{{ with .Pages }}
+<section class="index">
+<h2 class="man-head">Index</h2>
+<ul class="index-list">
+{{ range . }}
+<li><a href="{{ .RelPermalink }}"><span class="index-title">{{ .Title }}</span><span class="leader" aria-hidden="true"></span>{{ with or .Description .Summary }}<span class="index-desc">{{ . | plainify | truncate 64 }}</span>{{ end }}</a></li>
+{{ end }}
+</ul>
+</section>
+{{ end }}
+</article>
+</div>
 {{ end }}

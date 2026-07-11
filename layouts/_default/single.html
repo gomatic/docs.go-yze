@@ -1,6 +1,19 @@
+{{- /* Managed by nicerobot/tools.repository (distribute-docs) */ -}}
 {{ define "main" }}
-<article>
+{{- $toc := .TableOfContents -}}
+{{- $hasToc := in $toc "<li" -}}
+<div class="page{{ if $hasToc }} page-with-toc{{ end }}">
+<article class="sheet">
+<header class="sheet-head">
 <h1>{{ .Title }}</h1>
+</header>
 {{ .Content }}
 </article>
+{{ if $hasToc }}
+<aside class="contents" aria-label="table of contents">
+<h2 class="man-head">Contents</h2>
+{{ $toc }}
+</aside>
+{{ end }}
+</div>
 {{ end }}
