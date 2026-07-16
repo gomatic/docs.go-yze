@@ -23,5 +23,9 @@
 {{ partial "header.html" . }}
 <main id="manual" class="manual">{{ block "main" . }}{{ end }}</main>
 {{ partial "footer.html" . }}
+{{- /* Opt-in progressive enhancement: a docs repo sets params.enhanceScript to a
+       self-contained module (e.g. a bundled language engine) that upgrades its
+       code examples in place. Inert — renders nothing — when the param is unset. */ -}}
+{{ with site.Params.enhanceScript }}<script type="module" src="{{ . | relURL }}"></script>{{ end }}
 </body>
 </html>
