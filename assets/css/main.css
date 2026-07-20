@@ -194,6 +194,16 @@ th {
 }
 td { border-bottom: 1px solid var(--rule); padding: 0.5rem 1rem 0.5rem 0; vertical-align: top; }
 
+/* Table columns: the leading name/term column — and, in tables of three or
+   more columns, a trailing link column — hug their content on one line; the
+   prose column between them is the one that wraps. Under 720px tables stack
+   into cards instead (see responsive), so neither rule applies there. */
+@media (min-width: 721px) {
+  th:first-child, td:first-child,
+  th:last-child:not(:nth-child(-n+2)),
+  td:last-child:not(:nth-child(-n+2)) { white-space: nowrap; width: 1%; }
+}
+
 img { max-width: 100%; height: auto; }
 
 kbd {
@@ -337,6 +347,12 @@ h1.name-line::after { display: none; }
   .runhead-center { display: none; }
   .page { display: block; }
   .index-desc { display: none; }
+  /* tables stack into cards — a phone never scrolls sideways for a table */
+  table, tbody, tr, td { display: block; width: auto; }
+  thead { display: none; }
+  table { border-top: 1px solid var(--rule-strong); }
+  tr { padding: 0.65rem 0; border-bottom: 1px solid var(--rule); }
+  td { border-bottom: 0; padding: 0.12rem 0; overflow-wrap: anywhere; }
 }
 
 /* ---- motion & print ----------------------------------------------------- */
